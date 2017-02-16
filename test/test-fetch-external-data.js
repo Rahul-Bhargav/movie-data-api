@@ -5,28 +5,34 @@ const movieURLs = ['https://movie-api-lyalzcwvbg.now.sh/paramount', 'https://mov
 const actorURLs = ['https://movie-api-lyalzcwvbg.now.sh/actors']
 const movies = [
   {
-    "movieName": "Movie 1",
-    "releaseDate": "Oct-01-2015"
+    movieName: 'Movie 1',
+    releaseDate: 'Oct-01-2015',
+    studio: 'dreamworks'
   },
   {
-    "movieName": "Movie 2",
-    "releaseDate": "Oct-01-2016"
+    movieName: 'Movie 2',
+    releaseDate: 'Oct-01-2016',
+    studio: 'dreamworks'
   },
   {
-    "movieName": "Movie 3",
-    "releaseDate": "Nov-01-2016"
+    movieName: 'Movie 3',
+    releaseDate: 'Nov-01-2016',
+    studio: 'dreamworks'
   },
   {
-    "movieName": "Movie 4",
-    "releaseDate": "Jan-01-2015"
+    movieName: 'Movie 4',
+    releaseDate: 'Jan-01-2015',
+    studio: 'dreamworks'
   },
   {
-    "movieName": "Movie 5",
-    "releaseDate": "Feb-01-2016"
+    movieName: 'Movie 5',
+    releaseDate: 'Feb-01-2016',
+    studio: 'dreamworks'
   },
   {
-    "movieName": "Movie 6",
-    "releaseDate": "March-01-2016"
+    movieName: 'Movie 6',
+    releaseDate: 'March-01-2016',
+    studio: 'dreamworks'
   }
 ]
 
@@ -64,7 +70,6 @@ describe('get Movie Data when given a valid input', function () {
       .then(function (allData) {
         const movies = []
         allData.forEach((data) => {
-          data = JSON.parse(data)
           data.forEach((movie) => {
             movies.push(movie)
           })
@@ -82,20 +87,19 @@ describe('get Movie Data when given a valid input', function () {
   })
 })
 
-describe('get Movie Data when given a valid input', function () {
+describe('get Actors Data when given a valid input', function () {
   it('should return an array of json objects', function (done) {
-
     fetchExternalData.getActors(actorURLs)
-      .then(function (allData) {
-        const actors = []
-        allData.forEach((data) => {
-          data = JSON.parse(data)
-          data.forEach((actor) => {
-            actors.push(actor)
-          })
+    .then(function (allData) {
+      const actors = []
+      allData.forEach((data) => {
+        data = JSON.parse(data)
+        data.forEach((actor) => {
+          actors.push(actor)
         })
-        return Promise.resolve(actors)
       })
+      return Promise.resolve(actors)
+    })
       .then((response) => {
         expect(response).to.be.eqls(actors)
         done()

@@ -1,14 +1,23 @@
 const Sequelize = require('Sequelize')
 
-const dbName = process.env.DEV_MODE === 'test' ? 'testdb' : 'Excercise'
+const dbName = process.env.DEV_MODE === 'test' ? 'testdb' : 'moviedb'
 
 const sequelize = new Sequelize('postgres://rahulsurabhi:rah1161!@localhost:5432/' + dbName)
 
 const databaseOprations = {
-  insertMovie: function (name, releaseDate) {
+  readMovie: function (movie) {
+    return sequelize.query(`SELECT NAME,RELEASEDATE,STUDIO FROM MOVIE WHERE NAME=:movie`, { replacements: {movie: movie}, type: sequelize.QueryTypes.SELECT })
+  },
+  readActor: function (actor) {
+    return sequelize.query(`SELECT NAME FROM ACTORS WHERE NAME=:actor`, { replacements: {actor: actor}, type: sequelize.QueryTypes.SELECT })
+  },
+  readActorMovie: function (movie) {
+    return sequelize.query(`SELECT MOVIE,ACTOR FROM ACTORMOVIE WHERE MOVIE=:movie`, { replacements: {movie: movie}, type: sequelize.QueryTypes.SELECT })
+  },
+  insertMovie: function (name, releaseDate, studio) {
     if (typeof name !== 'string') return Promise.reject('Name is not valid')
     if (typeof releaseDate !== 'string') return Promise.reject('Release Date is not valid')
-    return sequelize.query(`INSERT INTO MOVIE (NAME, RELEASEDATE) VALUES (:name,:releaseDate)`, { replacements: { name: name, releaseDate: releaseDate }, type: sequelize.QueryTypes.INSERT })
+    return sequelize.query(`INSERT INTO MOVIE (NAME, RELEASEDATE, STUDIO) VALUES (:name,:releaseDate, :studio)`, { replacements: { name: name, releaseDate: releaseDate, studio: studio }, type: sequelize.QueryTypes.INSERT })
   },
   insertMovies: function (movies) {
     let values = ''
@@ -24,13 +33,17 @@ const databaseOprations = {
         isValid = false
         errorValues.push(index)
       }
-      values += `('${movie.movieName}', '${movie.releaseDate}'), `
+      else if (typeof movie.studio !== 'string') {
+        isValid = false
+        errorValues.push(index)
+      }
+      values += `('${movie.movieName}', '${movie.releaseDate}', '${movie.studio}'), `
     })
     if(!isValid)
       return Promise.reject(`Entries are not valid at indices :${errorValues}`)
     values = values.slice(0,-2)    
     // add functionality to have replacements
-    return sequelize.query(`INSERT INTO MOVIE (NAME, RELEASEDATE) VALUES ${values}`, {type: sequelize.QueryTypes.INSERT })
+    return sequelize.query(`INSERT INTO MOVIE (NAME, RELEASEDATE, STUDIO) VALUES ${values}`, {type: sequelize.QueryTypes.INSERT })
   },
   insertActors: function (actors) {
     let values = ''

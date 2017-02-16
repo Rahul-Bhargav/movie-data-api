@@ -15,6 +15,8 @@ const options = {
 
 const fetchExternalData = {}
 
+//check for valididty of URL
+
 fetchExternalData.getMovies = function (movieURLs) {
   let movies = []
   // Put this whole code in a different module
@@ -23,7 +25,10 @@ fetchExternalData.getMovies = function (movieURLs) {
     return new Promise(function (resolve, reject) {
       request(options, function (err, res, body) {
         if (err) { return reject(err) }
-        return resolve(body)
+        data = JSON.parse(body)
+        studio = options.url.split('/')[3]
+        data.forEach((movie)=>movie.studio=studio)
+        return resolve(data)
       })
     })
   }))
@@ -44,6 +49,7 @@ fetchExternalData.getActors = function (actorURLs, callback) {
   }))
 }
 
+// use this module in the above scenarios
 fetchExternalData.fetchData = function (options, callback) {
   request(options, function (error, response, body) {
     if (error) throw new Error(error)
