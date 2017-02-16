@@ -1,0 +1,25 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "Node-Express REST Api to get details of a movie.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rahul-Bhargav/movie-data-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rahul-Bhargav/movie-data-api/issues"
+  },
+  "homepage": "https://github.com/Rahul-Bhargav/movie-data-api#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "chai": "^3.5.0",
+    "express": "^4.14.1",
+    "mocha": "^3.2.0"
+  }
+}
