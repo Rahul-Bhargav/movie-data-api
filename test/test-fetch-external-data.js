@@ -71,7 +71,6 @@ describe('get Movie Data when given a valid input', function () {
         })
         return Promise.resolve(movies)
       })
-
       .then((response) => {
         expect(response).to.be.eqls(movies)
         done()
