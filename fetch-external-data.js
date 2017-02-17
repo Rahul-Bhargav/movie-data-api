@@ -1,4 +1,4 @@
-const request = require("request")
+const request = require('request')
 
 const options = {
   method: 'GET',
@@ -12,31 +12,27 @@ const options = {
   form: { task: 'hhel', status: 'false' }
 }
 
-
 const fetchExternalData = {}
 
-//check for valididty of URL
+// check for valididty of URL
 
 fetchExternalData.getMovies = function (movieURLs) {
-  let movies = []
   // Put this whole code in a different module
   return Promise.all(movieURLs.map(url => {
     options.url = url
     return new Promise(function (resolve, reject) {
       request(options, function (err, res, body) {
         if (err) { return reject(err) }
-        data = JSON.parse(body)
-        studio = options.url.split('/')[3]
-        data.forEach((movie)=>movie.studio=studio)
+        const data = JSON.parse(body)
+        const studio = options.url.split('/')[3]
+        data.forEach((movie) => movie.studio = studio)
         return resolve(data)
       })
     })
   }))
-
 }
 
 fetchExternalData.getActors = function (actorURLs, callback) {
-  let actors = []
   // Put this whole code in a different module
   return Promise.all(actorURLs.map(url => {
     options.url = url
@@ -51,6 +47,7 @@ fetchExternalData.getActors = function (actorURLs, callback) {
 
 // use this module in the above scenarios
 fetchExternalData.fetchData = function (options, callback) {
+  const movies = []
   request(options, function (error, response, body) {
     if (error) throw new Error(error)
     const responseMovies = JSON.parse(body)

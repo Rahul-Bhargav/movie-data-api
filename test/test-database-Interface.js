@@ -70,79 +70,79 @@ const invalidMovies = [
 
 const actors = [
   {
-    "actorName": "Actor 1",
-    "movies": [
-      "Movie 1",
-      "Movie 2",
-      "Movie 5"
+    'actorName': 'Actor 1',
+    'movies': [
+      'Movie 1',
+      'Movie 2',
+      'Movie 5'
     ]
   },
   {
-    "actorName": "Actor 2",
-    "movies": [
-      "Movie 2",
-      "Movie 3"
+    'actorName': 'Actor 2',
+    'movies': [
+      'Movie 2',
+      'Movie 3'
     ]
   },
   {
-    "actorName": "Actor 3",
-    "movies": [
-      "Movie 1",
-      "Movie 2",
-      "Movie 3",
-      "Movie 5",
-      "Movie 6"
+    'actorName': 'Actor 3',
+    'movies': [
+      'Movie 1',
+      'Movie 2',
+      'Movie 3',
+      'Movie 5',
+      'Movie 6'
     ]
   }
 ]
 
 const invalidactors = [
   {
-    "actorName": "Actor 1",
-    "movies": [
-      "Movie 1",
-      "Movie 2",
-      "Movie 5"
+    'actorName': 'Actor 1',
+    'movies': [
+      'Movie 1',
+      'Movie 2',
+      'Movie 5'
     ]
   },
   {
-    "actorName": 1,
-    "movies": [
-      "Movie 2",
-      "Movie 3"
+    'actorName': 1,
+    'movies': [
+      'Movie 2',
+      'Movie 3'
     ]
   },
   {
-    "actorName": "Actor 3",
-    "movies": [
-      "Movie 1",
-      "Movie 2",
-      "Movie 3",
-      "Movie 5",
-      "Movie 6"
+    'actorName': 'Actor 3',
+    'movies': [
+      'Movie 1',
+      'Movie 2',
+      'Movie 3',
+      'Movie 5',
+      'Movie 6'
     ]
   }
 ]
 
 const movieActors = [
   {
-    "actorName": "Actor 1",
-    "movieName": "movie 1"
+    'actorName': 'Actor 1',
+    'movieName': 'movie 1'
   },
   {
-    "actorName": "Actor 2",
-    "movieName": "movie 1"
+    'actorName': 'Actor 2',
+    'movieName': 'movie 1'
   }
 ]
 
 const invalidmovieActors = [
   {
-    "actorName": "Actor 1",
-    "movieName": "movie 1"
+    'actorName': 'Actor 1',
+    'movieName': 'movie 1'
   },
   {
-    "actorName": 1,
-    "movieName": "movie 1"
+    'actorName': 1,
+    'movieName': 'movie 1'
   }
 ]
 
@@ -165,7 +165,6 @@ describe('insert movie when given invalid data ', function () {
       })
   })
 })
-
 
 describe('insert movies when given valid data ', function () {
   it('should return rowcount of insertions', function (done) {
@@ -206,7 +205,6 @@ describe('insert actors when given invalid data ', function () {
       })
   })
 })
-
 
 describe('insert actor when given valid data ', function () {
   it('should return rowcount of insertions', function (done) {
@@ -287,7 +285,7 @@ describe('read actors when given valid actor name ', function () {
     databaseOprations.readActor('Actor 1')
       .then((result) => {
         expect(result).to.be.eqls([{
-          name: 'Actor 1',
+          name: 'Actor 1'
         }])
         done()
       })
@@ -300,11 +298,11 @@ describe('read movieActors when given valid movie name ', function () {
       .then((result) => {
         console.log(result)
         expect(result).to.be.eqls([{
-          actor: "Actor 1",
-          movie: "movie 1"
+          actor: 'Actor 1',
+          movie: 'movie 1'
         }, {
-          actor: "Actor 2",
-          movie: "movie 1"
+          actor: 'Actor 2',
+          movie: 'movie 1'
         }])
         done()
       })

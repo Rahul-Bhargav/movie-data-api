@@ -13,7 +13,7 @@ app.actorURLs = ['https://movie-api-lyalzcwvbg.now.sh/actors']
 app.get('/updateDatabase', function (request, response) {
   let movies = []
   let actors = []
-  //tried to movie this mess to a different file but did not work out
+  // tried to movie this mess to a different file but did not work out
   fetchExternalData.getMovies(app.movieURLs)
     .then(function (allData) {
       const movies = []
@@ -43,14 +43,13 @@ app.get('/updateDatabase', function (request, response) {
     })
     .then((result) => {
       actors = result
-      console.log(actors)
       return databaseInterface.insertActors(actors)
     })
     .then(() => {
       return sortMovieActors(actors)
     })
     .then((result) => {
-      movieActors = result
+      const movieActors = result
       return databaseInterface.insertMovieActors(movieActors)
     })
     .then(() => {
@@ -58,7 +57,7 @@ app.get('/updateDatabase', function (request, response) {
     })
     .catch((err) => {
       console.log(err)
-      response.sendStatus(500);
+      response.sendStatus(500)
     })
 })
 
@@ -79,7 +78,7 @@ app.get('/movie/:movieName', function (request, response) {
       return databaseInterface.readActorMovie(responseObject.movieName)
     })
     .then((result) => {
-      movieActors = result
+      const movieActors = result
       responseObject.actors = []
       movieActors.forEach((movieactor) => {
         responseObject.actors.push(movieactor.actor)
@@ -88,19 +87,18 @@ app.get('/movie/:movieName', function (request, response) {
     })
     .catch((err) => {
       console.log(err)
-      response.sendStatus(500);
+      response.sendStatus(500)
     })
 })
 
-function sortMovieActors(actors) {
+function sortMovieActors (actors) {
   const movieActors = []
   actors.forEach((actor) => {
-    const movies = actor.movies;
+    const movies = actor.movies
     movies.forEach((movie) => {
       movieActors.push({ actorName: actor.actorName, movieName: movie })
     })
   })
   return movieActors
 }
-
 app.listen(8080)

@@ -1,4 +1,4 @@
-var request = require("request")
+var request = require('request')
 const chai = require('chai')
 const expect = chai.expect
 
@@ -14,13 +14,14 @@ var options = {
   form: { task: 'hhel', status: 'false' }
 }
 
-
-
 describe(('Update database when called '), function () {
   it('Should return success if updated', function (done) {
     request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-        expect(body).to.be.eqls('Succesfull')
+      console.log('here')
+      if (error) throw new Error(error)
+      console.log(response)
+      expect(body).to.be.eqls('Succesfull')
+      done()
     })
   })
 })
