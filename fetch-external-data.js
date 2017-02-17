@@ -18,18 +18,11 @@ const fetchExternalData = {}
 
 fetchExternalData.getMovies = function (movieURLs) {
   // Put this whole code in a different module
-  return Promise.all(movieURLs.map(url => {
-    options.url = url
-    return new Promise(function (resolve, reject) {
-      request(options, function (err, res, body) {
-        if (err) { return reject(err) }
-        const data = JSON.parse(body)
-        const studio = options.url.split('/')[3]
-        data.forEach((movie) => movie.studio = studio)
-        return resolve(data)
-      })
+  return Promise.all(movieURLs.map(url => fetchExternalData.fetchData(url)))
+    .then((allData) => {
+      allData = [].concat.apply([], allData)
+      return Promise.resolve(allData)
     })
-  }))
 }
 
 fetchExternalData.getActors = function (actorURLs, callback) {
@@ -39,19 +32,22 @@ fetchExternalData.getActors = function (actorURLs, callback) {
     return new Promise(function (resolve, reject) {
       request(options, function (err, res, body) {
         if (err) { return reject(err) }
-        return resolve(body)
+        let responseData = JSON.parse(body)
+        return resolve(responseData)
       })
     })
   }))
 }
 
-// use this module in the above scenarios
-fetchExternalData.fetchData = function (options, callback) {
-  const movies = []
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error)
-    const responseMovies = JSON.parse(body)
-    responseMovies.forEach(movie => movies.push(movie))
+fetchExternalData.fetchData = function (url) {
+  options.url = url
+  return new Promise((resolve, reject) => {
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error)
+      const responseData = JSON.parse(body)
+      responseData.forEach(data => data.studio = url.split('/')[3])
+      return resolve(responseData)
+    })
   })
 }
 

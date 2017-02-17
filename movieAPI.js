@@ -6,7 +6,8 @@ const databaseInterface = require('./databaseInterface')
 app.use(express.static('public'))
 
 app.movieURLs = [
-  'https://movie-api-lyalzcwvbg.now.sh/paramount', 'https://movie-api-lyalzcwvbg.now.sh/dreamworks'
+  'https://movie-api-lyalzcwvbg.now.sh/paramount',
+  'https://movie-api-lyalzcwvbg.now.sh/dreamworks'
 ]
 app.actorURLs = ['https://movie-api-lyalzcwvbg.now.sh/actors']
 
@@ -14,43 +15,13 @@ app.get('/updateDatabase', function (request, response) {
   let movies = []
   let actors = []
   // tried to movie this mess to a different file but did not work out
-  fetchExternalData.getMovies(app.movieURLs)
-    .then(function (allData) {
-      const movies = []
-      allData.forEach((data) => {
-        data.forEach((movie) => {
-          movies.push(movie)
-        })
-      })
-      return Promise.resolve(movies)
-    })
-    .then((resolve) => {
-      movies = resolve
-      return databaseInterface.insertMovies(movies)
-    })
-    .then(() => {
-      return fetchExternalData.getActors(app.actorURLs)
-    })
-    .then(function (allData) {
-      const actors = []
-      allData.forEach((data) => {
-        data = JSON.parse(data)
-        data.forEach((actor) => {
-          actors.push(actor)
-        })
-      })
-      return Promise.resolve(actors)
-    })
-    .then((result) => {
-      actors = result
-      return databaseInterface.insertActors(actors)
-    })
-    .then(() => {
-      return sortMovieActors(actors)
-    })
-    .then((result) => {
-      const movieActors = result
-      return databaseInterface.insertMovieActors(movieActors)
+
+  Promise.all([fetchExternalData.getMovies(app.movieURLs), fetchExternalData.getActors(app.actorURLs)])
+    .then((response) => {
+      movies = response[0]
+      actors = response[1][0]
+      const movieActors = sortMovieActors(actors)
+      return Promise.all([databaseInterface.insertMovies(movies), databaseInterface.insertActors(actors), databaseInterface.insertMovieActors(movieActors)])
     })
     .then(() => {
       response.send('Succesfull')
@@ -67,18 +38,11 @@ app.get('/movie/:movieName', function (request, response) {
     response.sendStatus(500)
     return
   }
-  const responseObject = {}
-  databaseInterface.readMovie(movieName)
+  let responseObject = {}
+  Promise.all([databaseInterface.readMovie(movieName), databaseInterface.readActorMovie(movieName)])
     .then((result) => {
-      const movie = result[0]
-      responseObject.movieName = movie.name
-      responseObject.releaseDate = movie.releasedate
-      responseObject.studio = movie.studio
-      console.log(responseObject)
-      return databaseInterface.readActorMovie(responseObject.movieName)
-    })
-    .then((result) => {
-      const movieActors = result
+      responseObject = result[0]
+      const movieActors = result[1]
       responseObject.actors = []
       movieActors.forEach((movieactor) => {
         responseObject.actors.push(movieactor.actor)
