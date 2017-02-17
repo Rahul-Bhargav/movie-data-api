@@ -296,7 +296,6 @@ describe('read movieActors when given valid movie name ', function () {
   it('should return movieactor object', function (done) {
     databaseOprations.readActorMovie('movie 1')
       .then((result) => {
-        console.log(result)
         expect(result).to.be.eqls([{
           actor: 'Actor 1',
           movie: 'movie 1'

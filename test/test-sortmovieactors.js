@@ -3,8 +3,8 @@ function sortMovieActors (actors) {
   actors.forEach((actor) => {
     const movies = actor.movies
     movies.forEach((movie) => {
-     movieActors.push({actorName: actor.actorName, movieName: movie})
-   })
+      movieActors.push({actorName: actor.actorName, movieName: movie})
+    })
   })
   return movieActors
 }
